@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
+    public Long countByNid(Long nid);
+
+    public Long countByCandidateId(Long candidateId);
 }

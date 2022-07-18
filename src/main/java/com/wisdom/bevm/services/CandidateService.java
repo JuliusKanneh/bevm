@@ -1,5 +1,6 @@
 package com.wisdom.bevm.services;
 
+import com.wisdom.bevm.exceptions.CandidateNotFoundException;
 import com.wisdom.bevm.models.Candidate;
 import com.wisdom.bevm.respositories.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,23 @@ public class CandidateService {
         return candidateRepository.findAll();
     }
 
-    public void delete(Long id){
-        candidateRepository.deleteById(id);
+    public void delete(Long candidateId) throws CandidateNotFoundException {
+        Long count = candidateRepository.countByCandidateId(candidateId);
+        if (count == 0 || count == null) {
+            throw new CandidateNotFoundException("Candidate NID " +candidateId+" Not Found");
+        }
+        candidateRepository.deleteById(candidateId);
     }
     public Optional<Candidate> findById(Long id){
         return candidateRepository.findById(id);
+    }
+
+    public boolean isCitizenUnique(Long nid){
+        Long count = candidateRepository.countByNid(nid);
+        if (count > 0){
+            return false;
+        }else {
+            return true;
+        }
     }
 }

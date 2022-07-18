@@ -1,5 +1,6 @@
 package com.wisdom.bevm.controllers.apis;
 
+import com.wisdom.bevm.exceptions.CandidateNotFoundException;
 import com.wisdom.bevm.models.Candidate;
 import com.wisdom.bevm.services.CandidateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/candidates")
+@RequestMapping("/apis/candidates")
 public class CandidateApi {
 
     @Autowired
@@ -28,7 +29,7 @@ public class CandidateApi {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) throws CandidateNotFoundException {
         candidateService.delete(id);
     }
 

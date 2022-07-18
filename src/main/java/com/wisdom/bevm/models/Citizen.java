@@ -3,6 +3,7 @@ package com.wisdom.bevm.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class Citizen {
     private String firstname;
     private String lastname;
 
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     private String address;
@@ -29,6 +30,9 @@ public class Citizen {
 
     @OneToOne(mappedBy = "citizen")
     private Supervisor supervisor;
+
+    @OneToOne(mappedBy = "citizen")
+    private Candidate candidate;
 
     public Citizen(Long nid, String firstname, String lastname, Date dob, String address, String phone, String photo, String finger_print_id, Supervisor supervisor) {
         this.nid = nid;
@@ -143,5 +147,13 @@ public class Citizen {
     @Override
     public int hashCode() {
         return Objects.hash(nid, firstname, lastname, dob, address, phone, photo, finger_print_id, supervisor);
+    }
+
+    @Transient
+    public String getPhotoImagePath(){
+        if (nid == null || photo == null){
+            return "/images/default-image.jpeg";
+        }
+        return "/citizen-photos/" + this.nid + "/" + this.photo;
     }
 }

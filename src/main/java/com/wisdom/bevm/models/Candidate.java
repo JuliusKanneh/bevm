@@ -20,24 +20,29 @@ public class Candidate {
     private String fullName;
     private String photo;
 
+    @Column(name = "description")
+    private String description;
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(
+            name = "nid",
+            insertable = false,
+            updatable = false
+    )
+    private Citizen citizen;
+    private Long nid;
+
     @JsonIgnore
     @OneToMany(mappedBy = "candidate")
     private List<Votes> votes;
 
-    public Candidate(Long candidateId, String fullName, String photo, List<Votes> votes) {
+    public Candidate(Long candidateId, String fullName, String photo, String description, Long nid) {
         this.candidateId = candidateId;
         this.fullName = fullName;
         this.photo = photo;
-        this.votes = votes;
-    }
-
-    public void setVotes(List<Votes> votes) {
-        this.votes = votes;
-    }
-
-    public Candidate(String fullName, String photo) {
-        this.fullName = fullName;
-        this.photo = photo;
+        this.description = description;
+        this.nid = nid;
     }
 
     public Candidate() {
@@ -71,17 +76,28 @@ public class Candidate {
         return votes;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Candidate candidate = (Candidate) o;
-        return Objects.equals(candidateId, candidate.candidateId) && Objects.equals(fullName, candidate.fullName) && Objects.equals(photo, candidate.photo) && Objects.equals(votes, candidate.votes);
+    public Citizen getCitizen() {
+        return citizen;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(candidateId, fullName, photo, votes);
+    public void setCitizen(Citizen citizen) {
+        this.citizen = citizen;
+    }
+
+    public Long getNid() {
+        return nid;
+    }
+
+    public void setNid(Long nid) {
+        this.nid = nid;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -90,7 +106,30 @@ public class Candidate {
                 "candidateId=" + candidateId +
                 ", fullName='" + fullName + '\'' +
                 ", photo='" + photo + '\'' +
-                ", votes=" + votes +
+                ", description='" + description + '\'' +
+                ", citizen=" + citizen +
+                ", nid=" + nid +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Candidate candidate = (Candidate) o;
+        return Objects.equals(candidateId, candidate.candidateId) && Objects.equals(fullName, candidate.fullName) && Objects.equals(photo, candidate.photo) && Objects.equals(description, candidate.description) && Objects.equals(citizen, candidate.citizen) && Objects.equals(nid, candidate.nid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(candidateId, fullName, photo, description, citizen, nid);
+    }
+
+    @Transient
+    public String getPhotoImagePath(){
+        if (candidateId == null || photo == null){
+            return "/images/default-image.jpeg";
+        }
+        return "/candidate-photos/" + this.candidateId + "/" + this.photo;
     }
 }

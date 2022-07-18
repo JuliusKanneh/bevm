@@ -1,5 +1,7 @@
 package com.wisdom.bevm.controllers.apis;
 
+import com.wisdom.bevm.exceptions.CandidateNotFoundException;
+import com.wisdom.bevm.exceptions.CitizenNotFoundException;
 import com.wisdom.bevm.models.Citizen;
 import com.wisdom.bevm.services.CitizenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,11 @@ public class CitizenApi {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id){
-        citizenService.delete(id);
+        try {
+            citizenService.delete(id);
+        } catch (CitizenNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/{id}")
