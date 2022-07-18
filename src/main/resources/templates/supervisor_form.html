@@ -3,7 +3,7 @@
 <html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="_layout" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-  <title>Citizens</title>
+  <title>Supervisor</title>
   <style type="text/css">
         .btnAdd {
       text-align: right;
@@ -20,52 +20,48 @@
     <div th:if="${message != null}" class="alert alert-success text-center">
       [[${message}]]
     </div>
+
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 th:if="${citizen?.nid != null}" class="m-0 font-weight-bold text-primary">Edit Citizen with ID [[${citizen?.nid}]]</h6>
-        <h6 th:unless="${citizen?.nid != null}" class="m-0 font-weight-bold text-primary">Citizen Form</h6>
+        <h6 th:if="${supervisor?.rollNo != null}" class="m-0 font-weight-bold text-primary">Edit Supervisor with Roll No [[${supervisor.nid}]]</h6>
+        <h6 th:unless="${supervisor?.rollNo != null}" class="m-0 font-weight-bold text-primary">Supervisor Form</h6>
       </div>
       <div class="card-body">
-        <form th:action="@{/citizens}" th:method="post" enctype="multipart/form-data">
-          <input th:if="${citizen != null}" type="hidden" class="form-control" name="nid" th:value="${citizen.nid}">
+        <form th:action="@{/supervisors}" th:method="post" enctype="multipart/form-data">
+          <input th:if="${supervisor != null}" type="hidden" class="form-control" name="rollNo" th:value="${supervisor.rollNo}">
           <div class="mb-3 row">
-            <label for="firstname" class="col-sm-2 col-form-label">First Name</label>
+            <label for="dateAssigned" class="col-sm-2 col-form-label">Date Assigned</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="firstname" name="firstname" placeholder="Firstname" th:value="${citizen?.firstname ?: null}" required>
+              <input type="date" class="form-control" id="dateAssigned" name="dateAssigned" placeholder="yyyy-mm-dd"
+                     th:value="${#dates.format(supervisor?.dateAssigned ?: null, 'yyyy-MM-dd')}">
+            </div>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="nid" class="col-sm-2 col-form-label">National ID</label>
+            <div class="col-sm-10">
+              <select class="dropdown-toggle form-control" name="nid" id="nid">
+                <option th:value="null">--SELECT--</option>
+                <option th:each="citizen : ${citizens}"
+                        th:text="${citizen.nid} + ' - ' + ${citizen.lastname}"
+                        th:value="${citizen.nid}"
+                        th:selected="${citizen.nid} == ${supervisor?.nid}">DEFAULT</option>
+              </select>
             </div>
           </div>
           <div class="mb-3 row">
-            <label for="lastname" class="col-sm-2 col-form-label">Last Name</label>
+            <label for="description" class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Lastname" th:value="${citizen?.lastname ?: null}" required>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control" id="dob" name="dob" placeholder="dd/mm/yy" th:value="${#dates.format(citizen?.dob ?: null, 'yyyy-MM-dd')}" required>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="address" class="col-sm-2 col-form-label">Address</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="address" name="address" placeholder="Address L1" th:value="${citizen?.address ?: null}" required>
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="phone" class="col-sm-2 col-form-label">Phone</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="phone" name="phone" placeholder="+(250)-0888-9990" th:value="${citizen?.phone ?: null}" required>
+              <textarea type="text" class="form-control" id="description" name="description" placeholder="Brief Description"
+                        th:text="${supervisor?.description ?: null}"></textarea>
             </div>
           </div>
           <div class="mb-3 row">
             <label for="fileImage" class="col-sm-2 col-form-label">Photos</label>
             <div class="col-sm-10">
-              <input type="hidden" name="photo" th:value="${citizen?.photo}"/>
+              <input type="hidden" name="photo" th:value="${supervisor?.photo}"/>
               <input type="file" class="form-control mb-2" id="fileImage" name="image" accept="image/png, image/jpeg">
-<!--              <img id="thumbnail" alt="default-image" th:src="@{${user.photosImagePath}}"-->
-<!--                   class="rounded img-fluid" >-->
-              <img id="thumbnail" alt="default-image" th:src="@{${citizen?.photoImagePath}}"
+              <img id="thumbnail" alt="default-image" th:src="@{${supervisor?.photoImagePath}}"
                    class="rounded img-fluid" width="225" height="225">
             </div>
           </div>
@@ -87,7 +83,7 @@
         alert("Hey");
         console.log(window.location);
         history.back();
-<!--        window.location.assign("http://localhost:8282/bevm/citizens");-->
+<!--        window.location.assign("http://localhost:8282/bevm/supervisors");-->
       });
 
       $("#fileImage").change(function(){

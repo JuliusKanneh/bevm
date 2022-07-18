@@ -23,8 +23,8 @@
 
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 th:if="${candidate != null}" class="m-0 font-weight-bold text-primary">Edit Candidate with ID [[${candidate.nid}]]</h6>
-        <h6 th:unless="${candidate != null}" class="m-0 font-weight-bold text-primary">Candidate Form</h6>
+        <h6 th:if="${candidate?.candidateId != null}" class="m-0 font-weight-bold text-primary">Edit Candidate with ID [[${candidate.candidateId}]]</h6>
+        <h6 th:unless="${candidate?.candidateId != null}" class="m-0 font-weight-bold text-primary">Candidate Form</h6>
       </div>
       <div class="card-body">
         <form th:action="@{/candidates}" th:method="post" enctype="multipart/form-data">
@@ -44,7 +44,7 @@
                 <option th:each="citizen : ${citizens}"
                         th:text="${citizen.nid} + ' - ' + ${citizen.lastname}"
                         th:value="${citizen.nid}"
-                        th:selected="${citizen.nid} == ${candidate.nid}">DEFAULT</option>
+                        th:selected="${citizen.nid} == ${candidate?.nid}">DEFAULT</option>
               </select>
             </div>
           </div>

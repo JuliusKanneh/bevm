@@ -33,8 +33,8 @@ public class CandidateController {
 
     @GetMapping("/candidates")
     public String homePage(Model model){
-        List<Candidate> candidate = candidateService.findAll();
-        model.addAttribute("candidates", candidate);
+        List<Candidate> candidates = candidateService.findAll();
+        model.addAttribute("candidates", candidates);
         return "candidate";
     }
 
@@ -42,6 +42,7 @@ public class CandidateController {
     public String save(Candidate candidate, RedirectAttributes redirectAttributes,
                        @RequestParam("image") MultipartFile multipartFile) throws IOException{
         boolean isUpdating;
+        boolean isCitizenUnique = true;
         Long nid = candidate.getNid();
         System.out.println("Citizen ID: " + nid);
 
@@ -51,13 +52,24 @@ public class CandidateController {
 
         if (!candidateService.isCitizenUnique(nid) && candidate.getNid() != null){
             redirectAttributes.addFlashAttribute("message", "Candidate with NID " +candidate.getNid()+ " Already Exist!");
-            return "redirect:/candidates";
+            isCitizenUnique = false;
         }
 
         if(candidate.getCandidateId() != null){
-            isUpdating = false;
-        }else {
+            //TODO Consider doing this a better way later
+            Long _nid = candidateService.findById(candidate.getCandidateId()).get().getNid();
+
+            if (candidate.getNid() != _nid){
+                if (!isCitizenUnique){
+                    return "redirect:/supervisors";
+                }
+            }
             isUpdating = true;
+        }else {
+            if (!isCitizenUnique){
+                return "redirect:/supervisors";
+            }
+            isUpdating = false;
         }
 
         System.out.println(candidate.getCandidateId());
@@ -80,7 +92,7 @@ public class CandidateController {
             candidateService.add(candidate);
         }
 
-        if(!isUpdating){
+        if(isUpdating){
             redirectAttributes.addFlashAttribute("message", "Candidate ID " +candidate.getCandidateId()+ " has been updated successfully!");
         }else {
             redirectAttributes.addFlashAttribute("message", "The Candidate has been saved successfully!");

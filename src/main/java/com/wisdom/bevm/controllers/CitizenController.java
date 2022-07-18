@@ -63,9 +63,9 @@ public class CitizenController {
     }
 
     @GetMapping("/citizens/add")
-    public String showForm(Model model){
-        Citizen citizen = new Citizen();
-        citizen.setPhoto("iii");
+    public String showForm(Citizen citizen, Model model){
+//        Citizen citizen = new Citizen();
+//        citizen.setPhoto("iii");
         model.addAttribute("citizen", citizen);
         return "citizen_form";
     }

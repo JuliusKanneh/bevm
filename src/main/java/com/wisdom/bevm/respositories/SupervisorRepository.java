@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupervisorRepository extends JpaRepository<Supervisor, Long> {
+
+    public Long countByNid(Long nid);
+
+    public Long countByRollNo(Long rollNo);
 }

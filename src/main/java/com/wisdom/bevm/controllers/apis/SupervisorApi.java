@@ -1,5 +1,6 @@
 package com.wisdom.bevm.controllers.apis;
 
+import com.wisdom.bevm.exceptions.SupervisorNotFoundException;
 import com.wisdom.bevm.models.Supervisor;
 import com.wisdom.bevm.services.SupervisorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class SupervisorApi {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) throws SupervisorNotFoundException {
         supervisorService.delete(id);
     }
 
