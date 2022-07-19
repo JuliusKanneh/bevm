@@ -1,9 +1,6 @@
 package com.wisdom.bevm.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,17 +13,19 @@ public class PollingCenter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pollingCenterId;
 
-    private String address;
+    private String location;
+
+    private String description;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(
-            name = "supervisor_roll_no",
+            name = "supervisorRollNo",
             insertable = false,
             updatable = false
     )
     private Supervisor supervisor;
-    private Long supervisor_roll_no;
+    private Long supervisorRollNo;
 
     @OneToMany(mappedBy = "pollingCenter")
     private List<BEVM> bevms;
@@ -34,11 +33,12 @@ public class PollingCenter {
     @OneToMany(mappedBy = "pollingCenter")
     private List<RegisteredVoter> registeredVoters;
 
-    public PollingCenter(Long pollingCenterId, String address, Supervisor supervisor, Long supervisor_roll_no, List<BEVM> bevms, List<RegisteredVoter> registeredVoters) {
+    public PollingCenter(Long pollingCenterId, String location, String description, Supervisor supervisor, Long supervisorRollNo, List<BEVM> bevms, List<RegisteredVoter> registeredVoters) {
         this.pollingCenterId = pollingCenterId;
-        this.address = address;
+        this.location = location;
+        this.description = description;
         this.supervisor = supervisor;
-        this.supervisor_roll_no = supervisor_roll_no;
+        this.supervisorRollNo = supervisorRollNo;
         this.bevms = bevms;
         this.registeredVoters = registeredVoters;
     }
@@ -54,12 +54,12 @@ public class PollingCenter {
         this.pollingCenterId = pollingCenterId;
     }
 
-    public String getAddress() {
-        return address;
+    public String getLocation() {
+        return location;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Supervisor getSupervisor() {
@@ -70,12 +70,12 @@ public class PollingCenter {
         this.supervisor = supervisor;
     }
 
-    public Long getSupervisor_roll_no() {
-        return supervisor_roll_no;
+    public Long getSupervisorRollNo() {
+        return supervisorRollNo;
     }
 
-    public void setSupervisor_roll_no(Long supervisor_roll_no) {
-        this.supervisor_roll_no = supervisor_roll_no;
+    public void setSupervisorRollNo(Long supervisorRollNo) {
+        this.supervisorRollNo = supervisorRollNo;
     }
 
     public List<BEVM> getBevms() {
@@ -94,13 +94,22 @@ public class PollingCenter {
         this.registeredVoters = registeredVoters;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "PollingCenter{" +
                 "pollingCenterId=" + pollingCenterId +
-                ", address='" + address + '\'' +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
                 ", supervisor=" + supervisor +
-                ", supervisor_roll_no=" + supervisor_roll_no +
+                ", supervisorRollNo=" + supervisorRollNo +
                 ", bevms=" + bevms +
                 ", registeredVoters=" + registeredVoters +
                 '}';
@@ -111,11 +120,11 @@ public class PollingCenter {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PollingCenter that = (PollingCenter) o;
-        return Objects.equals(pollingCenterId, that.pollingCenterId) && Objects.equals(address, that.address) && Objects.equals(supervisor, that.supervisor) && Objects.equals(supervisor_roll_no, that.supervisor_roll_no) && Objects.equals(bevms, that.bevms) && Objects.equals(registeredVoters, that.registeredVoters);
+        return Objects.equals(pollingCenterId, that.pollingCenterId) && Objects.equals(location, that.location) && Objects.equals(description, that.description) && Objects.equals(supervisor, that.supervisor) && Objects.equals(supervisorRollNo, that.supervisorRollNo) && Objects.equals(bevms, that.bevms) && Objects.equals(registeredVoters, that.registeredVoters);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pollingCenterId, address, supervisor, supervisor_roll_no, bevms, registeredVoters);
+        return Objects.hash(pollingCenterId, location, description, supervisor, supervisorRollNo, bevms, registeredVoters);
     }
 }

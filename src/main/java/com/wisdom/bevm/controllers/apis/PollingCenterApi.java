@@ -1,9 +1,8 @@
 package com.wisdom.bevm.controllers.apis;
 
+import com.wisdom.bevm.exceptions.PollingCenterNotFoundException;
 import com.wisdom.bevm.models.PollingCenter;
-import com.wisdom.bevm.models.Supervisor;
 import com.wisdom.bevm.services.PollingCenterService;
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,7 @@ public class PollingCenterApi {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) throws PollingCenterNotFoundException {
         pollingCenterService.delete(id);
     }
 
@@ -70,8 +69,8 @@ public class PollingCenterApi {
         if (pollingCenterDate.isPresent()){
             PollingCenter _pollingCenter = pollingCenterDate.get();
 
-            _pollingCenter.setAddress(pollingCenter.getAddress());
-            _pollingCenter.setSupervisor_roll_no(pollingCenter.getSupervisor_roll_no());
+            _pollingCenter.setLocation(pollingCenter.getLocation());
+            _pollingCenter.setPollingCenterId(pollingCenter.getPollingCenterId());
 
             PollingCenter updatedPollingCenter = pollingCenterService.add(_pollingCenter);
             return new ResponseEntity<>(updatedPollingCenter, HttpStatus.OK);
