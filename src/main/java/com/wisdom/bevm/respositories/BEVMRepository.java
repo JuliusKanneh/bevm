@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BEVMRepository extends JpaRepository<BEVM, Long> {
+    public Long countByBevmId(Long bevmId);
 }

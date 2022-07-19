@@ -1,7 +1,7 @@
 package com.wisdom.bevm.controllers.apis;
 
+import com.wisdom.bevm.exceptions.BevmNotFoundException;
 import com.wisdom.bevm.models.BEVM;
-import com.wisdom.bevm.models.Candidate;
 import com.wisdom.bevm.services.BEVMService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class BEVMApi {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) throws BevmNotFoundException {
         bevmService.delete(id);
     }
 
@@ -49,7 +49,7 @@ public class BEVMApi {
 
             _bevm.setCapacity(bevm.getCapacity());
             _bevm.setPollingCenterId(bevm.getPollingCenterId());
-            _bevm.setStatus(bevm.getStatus());
+            _bevm.setActive(bevm.isActive());
             _bevm.setCapacity(bevm.getCapacity());
             _bevm.setSecurityLevel(bevm.getSecurityLevel());
 
