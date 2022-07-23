@@ -8,12 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/citizens")
+@RequestMapping("/api-citizens")
 public class CitizenApi {
 
     @Autowired
@@ -65,4 +66,18 @@ public class CitizenApi {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+//    @GetMapping("/enroll-finger/{nid}")
+//    public Integer enrollFinger(@RequestParam("f_id") Integer f_id, @PathVariable("nid") Long nid){
+//        Optional<Citizen> citizen = citizenService.findById(nid);
+//        if (citizen.isPresent()){
+//            Citizen _citizen = citizen.get();
+//            _citizen.setFingerPrintId(f_id);
+//            Citizen updatedCitizen = citizenService.add(_citizen);
+//
+//            return f_id;
+//        }
+//        return 0;
+//    }
+
 }

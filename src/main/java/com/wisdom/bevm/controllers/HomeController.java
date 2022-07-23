@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class HomeController {
 
+    @GetMapping("/admin")
+    public String adminHome(){
+        return "admin-page";
+    }
+
     @GetMapping("/")
     public String home(){
         return "index";
@@ -15,5 +20,15 @@ public class HomeController {
     @GetMapping("/layout")
     public String layout(){
         return "_layout";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("/logout-success")
+    public String logout(){
+        return "login";
     }
 }

@@ -78,26 +78,6 @@ public class PollingCenterController {
 
         PollingCenter savedPollingCenter = pollingCenterService.add(pollingCenter);
 
-//        System.out.println(pollingCenter.getPollingCenterId());
-//        System.out.println(multipartFile.getOriginalFilename());
-//
-//        if(!multipartFile.isEmpty()){
-//            String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//            supervisor.setPhoto(fileName);
-//
-//            Supervisor savedSupervisor = supervisorService.add(supervisor);
-//
-//            String uploadDir = "supervisor-photos/" + savedSupervisor.getRollNo();
-//            FileUploadUtils.cleanDir(uploadDir);
-//            FileUploadUtils.saveFile(uploadDir, fileName, multipartFile);
-//        }else {
-//            if (supervisor.getPhoto().isEmpty()){
-//                supervisor.setPhoto(null);
-//            }
-//
-//            supervisorService.add(supervisor);
-//        }
-
         if(isUpdating){
             redirectAttributes.addFlashAttribute("message", "Polling Center ID " +pollingCenter.getPollingCenterId()+ " has been updated successfully!");
         }else {

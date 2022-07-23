@@ -31,16 +31,16 @@ public class PollingCenter {
     private List<BEVM> bevms;
 
     @OneToMany(mappedBy = "pollingCenter")
-    private List<RegisteredVoter> registeredVoters;
+    private List<Votes> votes;
 
-    public PollingCenter(Long pollingCenterId, String location, String description, Supervisor supervisor, Long supervisorRollNo, List<BEVM> bevms, List<RegisteredVoter> registeredVoters) {
+    public PollingCenter(Long pollingCenterId, String location, String description, Supervisor supervisor, Long supervisorRollNo, List<BEVM> bevms, List<Votes> votes) {
         this.pollingCenterId = pollingCenterId;
         this.location = location;
         this.description = description;
         this.supervisor = supervisor;
         this.supervisorRollNo = supervisorRollNo;
         this.bevms = bevms;
-        this.registeredVoters = registeredVoters;
+        this.votes = votes;
     }
 
     public PollingCenter() {
@@ -86,12 +86,12 @@ public class PollingCenter {
         this.bevms = bevms;
     }
 
-    public List<RegisteredVoter> getRegisteredVoters() {
-        return registeredVoters;
+    public List<Votes> getVotes() {
+        return votes;
     }
 
-    public void setRegisteredVoters(List<RegisteredVoter> registeredVoters) {
-        this.registeredVoters = registeredVoters;
+    public void setVotes(List<Votes> votes) {
+        this.votes = votes;
     }
 
     public String getDescription() {
@@ -111,7 +111,7 @@ public class PollingCenter {
                 ", supervisor=" + supervisor +
                 ", supervisorRollNo=" + supervisorRollNo +
                 ", bevms=" + bevms +
-                ", registeredVoters=" + registeredVoters +
+                ", votes=" + votes +
                 '}';
     }
 
@@ -120,11 +120,11 @@ public class PollingCenter {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PollingCenter that = (PollingCenter) o;
-        return Objects.equals(pollingCenterId, that.pollingCenterId) && Objects.equals(location, that.location) && Objects.equals(description, that.description) && Objects.equals(supervisor, that.supervisor) && Objects.equals(supervisorRollNo, that.supervisorRollNo) && Objects.equals(bevms, that.bevms) && Objects.equals(registeredVoters, that.registeredVoters);
+        return Objects.equals(pollingCenterId, that.pollingCenterId) && Objects.equals(location, that.location) && Objects.equals(description, that.description) && Objects.equals(supervisor, that.supervisor) && Objects.equals(supervisorRollNo, that.supervisorRollNo) && Objects.equals(bevms, that.bevms) && Objects.equals(votes, that.votes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pollingCenterId, location, description, supervisor, supervisorRollNo, bevms, registeredVoters);
+        return Objects.hash(pollingCenterId, location, description, supervisor, supervisorRollNo, bevms, votes);
     }
 }

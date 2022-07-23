@@ -16,32 +16,43 @@ public class Votes {
 
     @OneToOne
     @JoinColumn(
-            name = "voter_id",
+            name = "voterNid",
             insertable = false,
             updatable = false
     )
-    private RegisteredVoter voter;
-    private Long voter_id;
+    private Citizen voter;
+    private Long voterNid;
 
     @ManyToOne
     @JoinColumn(
-            name = "candidate_id",
+            name = "candidateId",
             insertable = false,
             updatable = false
     )
     private Candidate candidate;
-    private Long candidate_id;
+    private Long candidateId;
+
+    @ManyToOne
+    @JoinColumn(
+            name = "pollingCenterId",
+            insertable = false,
+            updatable = false
+    )
+    public PollingCenter pollingCenter;
+    private Long pollingCenterId;
 
     public Votes() {
     }
 
-    public Votes(Long id, Date dateVoted, RegisteredVoter voter, Long voter_id, Candidate candidate, Long candidate_id) {
+    public Votes(Long id, Date dateVoted, Citizen voter, Long voterNid, Candidate candidate, Long candidateId, PollingCenter pollingCenter, Long pollingCenterId) {
         this.id = id;
         this.dateVoted = dateVoted;
         this.voter = voter;
-        this.voter_id = voter_id;
+        this.voterNid = voterNid;
         this.candidate = candidate;
-        this.candidate_id = candidate_id;
+        this.candidateId = candidateId;
+        this.pollingCenter = pollingCenter;
+        this.pollingCenterId = pollingCenterId;
     }
 
     public Long getId() {
@@ -60,20 +71,20 @@ public class Votes {
         this.dateVoted = dateVoted;
     }
 
-    public RegisteredVoter getVoter() {
+    public Citizen getVoter() {
         return voter;
     }
 
-    public void setVoter(RegisteredVoter voter) {
+    public void setVoter(Citizen voter) {
         this.voter = voter;
     }
 
-    public Long getVoter_id() {
-        return voter_id;
+    public Long getVoterNid() {
+        return voterNid;
     }
 
-    public void setVoter_id(Long voter_id) {
-        this.voter_id = voter_id;
+    public void setVoterNid(Long voterNid) {
+        this.voterNid = voterNid;
     }
 
     public Candidate getCandidate() {
@@ -84,24 +95,28 @@ public class Votes {
         this.candidate = candidate;
     }
 
-    public Long getCandidate_id() {
-        return candidate_id;
+    public Long getCandidateId() {
+        return candidateId;
     }
 
-    public void setCandidate_id(Long candidate_id) {
-        this.candidate_id = candidate_id;
+    public void setCandidateId(Long candidateId) {
+        this.candidateId = candidateId;
     }
 
-    @Override
-    public String toString() {
-        return "Votes{" +
-                "id=" + id +
-                ", dateVoted=" + dateVoted +
-                ", voter=" + voter +
-                ", voter_id=" + voter_id +
-                ", candidate=" + candidate +
-                ", candidate_id=" + candidate_id +
-                '}';
+    public PollingCenter getPollingCenter() {
+        return pollingCenter;
+    }
+
+    public void setPollingCenter(PollingCenter pollingCenter) {
+        this.pollingCenter = pollingCenter;
+    }
+
+    public Long getPollingCenterId() {
+        return pollingCenterId;
+    }
+
+    public void setPollingCenterId(Long pollingCenterId) {
+        this.pollingCenterId = pollingCenterId;
     }
 
     @Override
@@ -109,12 +124,25 @@ public class Votes {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Votes votes = (Votes) o;
-        return Objects.equals(id, votes.id) && Objects.equals(dateVoted, votes.dateVoted) && Objects.equals(voter, votes.voter) && Objects.equals(voter_id, votes.voter_id) && Objects.equals(candidate, votes.candidate) && Objects.equals(candidate_id, votes.candidate_id);
+        return Objects.equals(id, votes.id) && Objects.equals(dateVoted, votes.dateVoted) && Objects.equals(voter, votes.voter) && Objects.equals(voterNid, votes.voterNid) && Objects.equals(candidate, votes.candidate) && Objects.equals(candidateId, votes.candidateId) && Objects.equals(pollingCenter, votes.pollingCenter) && Objects.equals(pollingCenterId, votes.pollingCenterId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dateVoted, voter, voter_id, candidate, candidate_id);
+        return Objects.hash(id, dateVoted, voter, voterNid, candidate, candidateId, pollingCenter, pollingCenterId);
     }
 
+    @Override
+    public String toString() {
+        return "Votes{" +
+                "id=" + id +
+                ", dateVoted=" + dateVoted +
+                ", voterNid=" + voter +
+                ", voter_id=" + voterNid +
+                ", candidate=" + candidate +
+                ", candidate_id=" + candidateId +
+                ", pollingCenter=" + pollingCenter +
+                ", pollingCenterId=" + pollingCenterId +
+                '}';
+    }
 }

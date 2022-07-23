@@ -93,4 +93,22 @@ public class CitizenController {
         }
         return "redirect:/citizens";
     }
+
+    @GetMapping("/fingerprintid")
+    public String enrollFinger(@RequestParam("f_id") Integer f_id, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("f_id", f_id);
+        return "redirect:/citizens";
+    }
+
+    @GetMapping("/enroll-finger/{nid}")
+    public String enrollFinger(@RequestParam("f_id") Integer f_id, @PathVariable("nid") Long nid, RedirectAttributes redirectAttributes){
+        Optional<Citizen> citizen = citizenService.findById(nid);
+        if (citizen.isPresent()){
+            Citizen _citizen = citizen.get();
+            _citizen.setFingerPrintId(f_id);
+            Citizen updatedCitizen = citizenService.add(_citizen);
+            redirectAttributes.addFlashAttribute("message", "Citizen NID " + updatedCitizen.getNid() + " finger print " + updatedCitizen.getFingerPrintId() + " added successfully!");
+        }
+        return "redirect:/citizens";
+    }
 }
