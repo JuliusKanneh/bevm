@@ -63,7 +63,7 @@
                                 </a>
                                 <a type="button" data-toggle="modal" data-target="#enrolFingerModal"
                                         title="Enroll Fingerprint for this citizen"
-                                        th:href="@{'/enroll-finger/' + ${citizen.nid} + '?f_id=' + ${f_id}}"
+                                        th:href="@{'/enroll-finger/' + ${citizen.nid}}"
                                         class="btn btn-info btn-sm enrollBtn"
                                         th:nid = "${citizen.nid}">
                                     Enroll Finger
@@ -122,7 +122,7 @@
                             </div>
                             <div class="row m-1">
                                 <div class="col-4">
-                                    <label for="nid">Fingerprint ID: </label>
+                                    <label for="f_id">Fingerprint ID: </label>
                                 </div>
                                 <div class="col-8">
                                     <input type="text" class="form-control" id="f_id" name="f_id" placeholder="Fingerprint ID" />
@@ -142,6 +142,9 @@
 
 <!--        Java Script Starts     -->
         <script th:inline="javascript">
+            var url = "http://192.168.1.118";
+            var f_id;
+
             $(document).ready(function(){
                 $(".link-delete").on("click", function(e){
                     e.preventDefault();
@@ -156,17 +159,37 @@
 
             $(document).ready(function(){
                 $(".enrollBtn").on("click", function(e){
-                    e.preventDefault();
+                    //e.preventDefault();
                     link = $(this);
-                    //alert($(this).attr("href"));
+                    var url = link.attr("href");
+                    url = url + "?f_id=" + f_id;
+                    alert(url);
                     nid = link.attr("nid");
-                    $("#updateBtn").attr("href", link.attr("href"))
+                    $("#updateBtn").attr("href", url)
                     $("#nid").val(nid);
                     $("#enrollFingerModalBody").text("Enrolling finger print for NID " + nid);
                     $("#enrollFingerModalTitle").text("Enroll Fingerprint for NID " + nid);
                     $("#enrolFingerModal").modal();
                 });
             });
+
+            function fetchData(){
+                fetch(url + "/data")
+                .then((result) => result.json())
+                .then((data) => displayData(data));
+            }
+
+            function displayData(data){
+                console.log(data);
+                console.log("Finger ID: ", data.finger);
+                f_id = data.finger;
+                document.getElementById("f_id").value = data.finger;
+            }
+
+            setInterval(() => {
+                    fetchData();
+                }, 5000
+            );
 	    </script>
 <!--        Java Script Ends     -->
     </div>

@@ -29,7 +29,7 @@ public class TestCitizen {
 
     @Test
     public void testFindByFingerPrintId(){
-        int f_id = 1;
+        int f_id = 12;
         Optional<Citizen> citizen = citizenRepository.findByFingerPrintId(f_id);
         assertThat(citizen.get()).isNotNull();
     }

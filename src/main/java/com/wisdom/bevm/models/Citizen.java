@@ -23,6 +23,7 @@ public class Citizen {
     private String phone;
     private String photo;
 
+    @Column(unique = true)
     private int fingerPrintId;
 
     @OneToOne(mappedBy = "citizen")

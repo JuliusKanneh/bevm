@@ -2,6 +2,7 @@ package com.wisdom.bevm.controllers;
 
 import com.wisdom.bevm.exceptions.PollingCenterNotFoundException;
 import com.wisdom.bevm.exceptions.VoteNotFoundException;
+import com.wisdom.bevm.models.Citizen;
 import com.wisdom.bevm.models.Votes;
 import com.wisdom.bevm.services.CandidateService;
 import com.wisdom.bevm.services.CitizenService;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -140,5 +142,20 @@ public class VotingController {
             redirectAttributes.addFlashAttribute("message", ex.getMessage());
         }
         return "redirect:/votes";
+    }
+
+    @GetMapping("/votes/candidates")
+    public String showCandidates(){
+        return "voting_candidates";
+    }
+
+    @GetMapping("/votes/find-citizen")
+    public String findCitizenByFingerPrintId(@RequestParam("f_id") Integer f_id, Model model){
+        Citizen found  = citizenService.findByFingerPrintId(f_id);
+        System.out.println("Citizen ID: " + found.getNid());
+        System.out.println("FingerPrint ID: " + found.getNid());
+
+        model.addAttribute("foundCitizen", found);
+        return "index";
     }
 }

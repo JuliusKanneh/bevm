@@ -10,6 +10,11 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+ *.icon-white {color: white}
+ *.icon-silver {color: silver}
+ *.icon-green {color: green}
+ *.icon-dark {color: grey}
+
 :root {
   --blue: #4e73df;
   --indigo: #6610f2;
@@ -11278,4 +11283,23 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
+}
+
+@media screen and (max-width: 768px){
+    /* small screen */
+    div.full-details{display: none }
+    div.less-details{ display: block; }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    /* medium screen */
+    div.full-details{display : block}
+    div.less-details{ display: none }
+    div.hideable-column{display: none }
+}
+
+@media screen and (min-width: 1024px){
+    /* large screen */
+    div.less-details{ display: none }
+    div.hideable-column{display: table-cell}
 }

@@ -26,17 +26,81 @@
         </div>
 
         <div class="mb-3">
-            <form th:action="@{/voting}" method="post" class="justify-content-center">
+            <form th:action="@{/voting/candidates}" method="post" class="justify-content-center">
                 <input type="text" class="form-control-lg text-center" id="nid" placeholder="Enter National ID Here" required>
                 <br><br>
 <!--                <a class="btn btn-primary text-center" href="#">Start Voting Now</a>-->
                 <input type="submit" class="btn btn-primary" value="Start Voting Now">
             </form>
+        </div>
 
+        <div>
+            <span class="text-white">National ID: </span> &nbsp;
+            <span>[[${foundCitizen?.nid}]]</span>
         </div>
     </div>
 
+<!--    Modal Starts Here -->
+
+    <div class="modal fade text-center" id="confirmInfoModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="confirmInfoModalTitle">Confirm Information</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-inline">
+                        <div class="row m-1">
+                            <div class="col-4">
+                                <label for="nid">National ID: </label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="confirm_nid" name="nid" placeholder="National ID" />
+                            </div>
+                        </div>
+                        <div class="row m-1">
+                            <div class="col-4">
+                                <label for="f_id">Fingerprint ID: </label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control" id="f_id" name="f_id" placeholder="Fingerprint ID" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <a class="btn btn-success" href="" id="confirmBtn">Confirm</a>
+                    <button type="button" data-dismiss="modal" class="btn btn-danger">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    Modal Ends Here -->
 </div>
 
+<script th:inline="javascript">
+    var citizen = [[${foundCitizen}]];
+    console.log(citizen.nid);
+    setInterval(() => {
+        //console.log(citizen);
+        if(citizen != null){
+            displayModal(citizen);
+            console.log("I GOT here");
+        }
+        console.log("I am here");
+    }, 5000);
+
+    function displayModal(data){
+        console.log("I am TOO");
+        $("#confirmBtn").attr("href", "/bevms/votes/candidates")
+        $("#confirm_nid").val(data.nid);
+        $("#confirmInfoModalTitle").text("Confirm Info of citizen for NID " + nid);
+        $("#confirmInfoModal").modal();
+    }
+</script>
 </body>
 </html>
