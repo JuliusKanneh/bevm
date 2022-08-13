@@ -60,4 +60,7 @@ public class BevmUserDetails implements UserDetails {
         return user.isEnabled();
     }
 
+    public String getFullName(){
+        return user.getFullName();
+    }
 }

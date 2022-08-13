@@ -46,9 +46,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .permitAll();
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .permitAll()
+                .and()
+                .logout().permitAll()
+                .and().rememberMe();
     }
 
     @Override

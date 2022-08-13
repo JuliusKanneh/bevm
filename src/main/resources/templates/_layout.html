@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="www.thymeleaf.org/thymeleaf-extras/springsecurity5">
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -270,7 +271,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle border-left border-dark" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 large">Admin</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 large" sec:authentication="principal.fullName"></span>
                                 <i class="fa-solid fa-user fa-2xl"></i>
 <!--                                <img class="img-profile rounded-circle"-->
 <!--                                     src="img/undraw_profile.svg">-->
@@ -304,10 +305,16 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
+                <form th:action="@{/logout}" method="post" name="logoutForm" th:hidden="true">
+                    <input type="submit" />
+                </form>
+
                 <div class="container-fluid">
                     <div layout:fragment="content">
                         <h2>Changing Content</h2>
                     </div>
+
+                    <div th:replace="fragments :: footer"></div>
                 </div>
             </div>
 
@@ -324,7 +331,7 @@
                             Are you sure you want to logout?
                         </div>
                         <div class="modal-footer">
-                            <a type="button" class="btn btn-primary" th:href="@{/logout}">Yes</a>
+                            <a href="" class="btn btn-primary" id="logoutLink">Yes</a>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                         </div>
                     </div>
@@ -334,6 +341,16 @@
         </div>
     </div>
 
+    <script type="text/javascript">
+        $(document).ready(function(){
+            console.log("I am here");
+            $("#logoutLink").on("click", function(e){
+                console.log("You clicked me");
+                e.preventDefault();
+                document.logoutForm.submit();
+            });
+        });
+    </script>
 </body>
 
 </html>
