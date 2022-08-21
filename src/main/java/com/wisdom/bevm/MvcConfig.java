@@ -27,10 +27,10 @@ public class MvcConfig implements WebMvcConfigurer {
         String supervisorPhotosPath = supervisorPhotosDir.toFile().getAbsolutePath();
         String userPhotosPath = userPhotosDir.toFile().getAbsolutePath();
 
-        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("/file:" + citizenPhotosPath + "/");
-        registry.addResourceHandler("/" + dirName1 + "/**").addResourceLocations("/file:" + candidatePhotosPath + "/");
-        registry.addResourceHandler("/" + dirName2 + "/**").addResourceLocations("/file:" + supervisorPhotosPath + "/");
-        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("/file:" + userPhotosPath + "/"); //use ("file:/") for windows
+        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:" + citizenPhotosPath + "/");
+        registry.addResourceHandler("/" + dirName1 + "/**").addResourceLocations("file:" + candidatePhotosPath + "/");
+        registry.addResourceHandler("/" + dirName2 + "/**").addResourceLocations("file:" + supervisorPhotosPath + "/");
+        registry.addResourceHandler("/" + dirName + "/**").addResourceLocations("file:" + userPhotosPath + "/"); //use ("file:/") for windows
     }
 
 }

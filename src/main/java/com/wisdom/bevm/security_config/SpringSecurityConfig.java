@@ -51,7 +51,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                 .logout().permitAll()
-                .and().rememberMe();
+                .and()
+                    .rememberMe()
+                    .key("abcDEFghiJKL_9876543210mnoPQRstuVWXyz")
+                    .tokenValiditySeconds(7 * 24 * 60 * 60);
     }
 
     @Override
