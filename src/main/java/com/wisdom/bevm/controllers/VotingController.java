@@ -9,6 +9,7 @@ import com.wisdom.bevm.services.CitizenService;
 import com.wisdom.bevm.services.PollingCenterService;
 import com.wisdom.bevm.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -149,13 +150,28 @@ public class VotingController {
         return "voting_candidates";
     }
 
-    @GetMapping("/votes/find-citizen")
+    @PostMapping("/votes/find-citizen")
+    public String findCitizenByNid(@RequestParam("nid") Long nid, Model model){
+        System.out.println("NID: " + nid);
+        Optional<Citizen> found  = citizenService.findById(nid);
+        if (found.isPresent()){
+            Citizen _found = found.get();
+            System.out.println("Citizen ID: " + _found.getNid());
+            System.out.println("FingerPrint ID: " + _found.getFingerPrintId());
+            model.addAttribute("foundCitizen", _found);
+        }
+
+        return "index";
+    }
+
+    @PostMapping("/votes/print/find-citizen")
     public String findCitizenByFingerPrintId(@RequestParam("f_id") Integer f_id, Model model){
+        System.out.println("Fingerprint ID: " + f_id);
         Citizen found  = citizenService.findByFingerPrintId(f_id);
         System.out.println("Citizen ID: " + found.getNid());
         System.out.println("FingerPrint ID: " + found.getNid());
 
         model.addAttribute("foundCitizen", found);
-        return "index";
+        return "redirect:/votes/candidates";
     }
 }
