@@ -56,4 +56,8 @@ public class VoteService {
             return true;
         }
     }
+
+    public Optional<Votes> findByVoterNid(Long nid) {
+        return votesRepository.findByVoterNid(nid);
+    }
 }

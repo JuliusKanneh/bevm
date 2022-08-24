@@ -36,9 +36,8 @@ public class CitizenService {
         return citizenRepository.findById(id);
     }
 
-    public Citizen findByFingerPrintId(Integer fingerPrintId){
-        Optional<Citizen> citizen = citizenRepository.findByFingerPrintId(fingerPrintId);
-        return citizen.get();
+    public Optional<Citizen> findByFingerPrintId(Integer fingerPrintId){
+        return citizenRepository.findByFingerPrintId(fingerPrintId);
     }
 
 }

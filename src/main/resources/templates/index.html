@@ -20,8 +20,20 @@
             height: 100vh">
 
     <div class="container-fluid max-auto" style="width: 600px;">
+        <div th:if="${citizenNotFound}" class="alert alert-warning text-center">
+            <span>National ID entered is not correct! Contact supervisor for support.</span>
+        </div>
+        <div th:if="${printsNotMatch}" class="alert alert-warning text-center">
+            <span>Fingerprint Not Match, try again! If it persists, contact the supervisor!</span>
+        </div>
+        <div th:if="${voteSucceed}" class="alert alert-success text-center">
+            <span>Citizen [[${nid}]] has successfully Voted! </span>
+        </div>
+        <div th:if="${alreadyVoted}" class="alert alert-success text-center">
+            <span>Citizen [[${nid}]] has ALREADY VOTED! </span>
+        </div>
         <div>
-            <h2 class="text-center">Welcome to Biometric Electronic Voting System</h2>
+            <h2 class="text-center">Welcome to Biometric Voting System</h2>
             <p class="text-center text-secondary">Enter Your National ID to Start Voting</p>
         </div>
 
@@ -115,6 +127,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" th:value="${foundCitizen?.nid}" name="nid">
                         <div class="mb-3">
                             <label for="f_id" class="form-label">Finger Print</label>
                             <input type="text" class="form-control" name="f_id" id="f_id" aria-describedby="f_id_des" >

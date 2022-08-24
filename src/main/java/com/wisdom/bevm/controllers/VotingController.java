@@ -146,7 +146,7 @@ public class VotingController {
     }
 
     @GetMapping("/votes/candidates")
-    public String showCandidates(){
+    public String showCandidates(Model model){
         return "voting_candidates";
     }
 
@@ -159,19 +159,81 @@ public class VotingController {
             System.out.println("Citizen ID: " + _found.getNid());
             System.out.println("FingerPrint ID: " + _found.getFingerPrintId());
             model.addAttribute("foundCitizen", _found);
+        }else {
+            model.addAttribute("citizenNotFound", true);
         }
 
+        return displayDetails(model);
+    }
+
+    public String displayDetails(Model model){
         return "index";
     }
 
     @PostMapping("/votes/print/find-citizen")
-    public String findCitizenByFingerPrintId(@RequestParam("f_id") Integer f_id, Model model){
+    public String findCitizenByFingerPrintId(
+            @RequestParam("f_id") Integer f_id,
+            @RequestParam("nid") Long nid,
+            Model model
+    ){
         System.out.println("Fingerprint ID: " + f_id);
-        Citizen found  = citizenService.findByFingerPrintId(f_id);
-        System.out.println("Citizen ID: " + found.getNid());
-        System.out.println("FingerPrint ID: " + found.getNid());
+        System.out.println("NID: " + nid);
 
-        model.addAttribute("foundCitizen", found);
-        return "redirect:/votes/candidates";
+        Optional<Citizen> citizenFromDb  = citizenService.findByFingerPrintId(f_id);
+        if (citizenFromDb.isPresent()){
+            Citizen currentCitizen  = citizenService.findById(nid).get();
+//            Citizen _citizenFromDb  = citizenService.findById(nid).get();
+            if (currentCitizen.getFingerPrintId() == citizenFromDb.get().getFingerPrintId()){
+                System.out.println("Fingerprint match, you are eligible to vote");
+                model.addAttribute("nid", currentCitizen.getNid());
+                model.addAttribute("pollingCenterId", 1);
+                model.addAttribute("candidates", candidateService.findAll());
+                return showCandidates(model);
+            }else {
+                System.out.println("Fingerprints don't match");
+                model.addAttribute("printsNotMatch", true);
+            }
+        }else {
+            System.out.println("Fingerprints don't match");
+            model.addAttribute("printsNotMatch", true);
+        }
+
+//        System.out.println("Citizen ID: " + found.getNid());
+//        System.out.println("FingerPrint ID: " + found.getFingerPrintId());
+//
+//        model.addAttribute("foundCitizen", found);
+        return findCitizenByNid(nid, model);
+    }
+
+    @GetMapping("/votes/{nid}/{c_id}/{p_id}")
+    public String castVote(
+            @PathVariable("nid") Long nid,
+            @PathVariable("c_id") Long c_id,
+            @PathVariable("p_id") Long p_id,
+            RedirectAttributes redirectAttributes
+    ){
+        System.out.println(nid);
+        System.out.println(c_id);
+        System.out.println(p_id);
+
+        Votes votes = new Votes();
+        votes.setCandidateId(c_id);
+        votes.setVoterNid(nid);
+        votes.setPollingCenterId(p_id);
+        votes.setDateVoted(new Date());
+
+        Optional<Votes> existingVote = voteService.findByVoterNid(nid);
+        if (existingVote.isPresent()){
+            //send notification to supervisor
+            System.out.println("Already voted");
+            redirectAttributes.addFlashAttribute("alreadyVoted", true);
+            return "redirect:/";
+        }
+        Votes voted = voteService.add(votes);
+        System.out.println(voted);
+
+        redirectAttributes.addFlashAttribute("voteSucceed", true);
+        redirectAttributes.addFlashAttribute("nid", nid);
+        return "redirect:/";
     }
 }
