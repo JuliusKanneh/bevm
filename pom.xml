@@ -107,6 +107,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>bevm</finalName>
 	</build>
 
 </project>
