@@ -20,7 +20,7 @@ jobs:
         java-version: 17.0  # Change this to your desired Java version
 
     - name: Build Spring application
-      run: ./mvnw clean package -Dmaven.test.skip=true
+      run: mvn -B clean package --file ./pom.xml -Dmaven.test.skip=true
 
     - name: Copy service file to Droplet
       uses: appleboy/scp-action@master
@@ -28,7 +28,7 @@ jobs:
         host: ${{ secrets.DROPLET_IP }}
         username: ${{ secrets.DROPLET_SSH_USERNAME }}
         password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
-        source: "bevm.service"  # Path to your service file
+        source: "./bevm.service"  # Path to your service file
         target: "/etc/systemd/system/bevm.service" 
     
     - name: Copy JAR file to Droplet
@@ -37,7 +37,7 @@ jobs:
         host: ${{ secrets.DROPLET_IP }}
         username: ${{ secrets.DROPLET_SSH_USERNAME }}
         password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
-        source: "target/bevm-0.0.1-SNAPSHOT.jar"  # Path to your built JAR file
+        source: "./target/bevm-0.0.1-SNAPSHOT.jar"  # Path to your built JAR file
         target: "/artifact/bevm-0.0.1-SNAPSHOT.jar"  # Destination path on Droplet
 
     - name: SSH into Droplet and restart application
