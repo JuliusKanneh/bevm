@@ -1,0 +1,53 @@
+name: Java Spring Deployment
+
+on:
+  push:
+    branches:
+      - main
+      - ch-deploy-to-dgo-prince  # Change this to your main branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt'
+        java-version: 17.0  # Change this to your desired Java version
+
+    - name: Build Spring application
+      run: mvn -B clean package --file ./pom.xml -Dmaven.test.skip=true
+
+    - name: Copy service file to Droplet
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_SSH_USERNAME }}
+        password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
+        source: "./bevm.service"  # Path to your service file
+        target: "/etc/systemd/system" 
+    
+    - name: Copy JAR file to Droplet
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_SSH_USERNAME }}
+        password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
+        source: "./target/bevm.jar"  # Path to your built JAR file
+        target: "/artifact"  # Destination path on Droplet
+
+    - name: SSH into Droplet and restart application
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DROPLET_IP }}
+        username: ${{ secrets.DROPLET_SSH_USERNAME }}
+        password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
+        script: |
+          sudo systemctl daemon-reload  # Reload systemd configuration
+          sudo systemctl stop bevm.service  # Stop the existing service if applicable
+          sudo systemctl start bevm.service  # Start the new application
