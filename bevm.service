@@ -7,7 +7,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=root
-ExecStart=/usr/bin/java -jar /artifact/bevm-0.0.1-SNAPSHOT.jar
+ExecStart=/usr/bin/java -jar /artifact/bevm.jar
 
 [Install]
 WantedBy=multi-user.target

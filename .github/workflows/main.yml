@@ -37,8 +37,8 @@ jobs:
         host: ${{ secrets.DROPLET_IP }}
         username: ${{ secrets.DROPLET_SSH_USERNAME }}
         password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
-        source: "./target/bevm-0.0.1-SNAPSHOT.jar"  # Path to your built JAR file
-        target: "/artifact/bevm-0.0.1-SNAPSHOT.jar"  # Destination path on Droplet
+        source: "./target/bevm.jar"  # Path to your built JAR file
+        target: "/artifact/bevm.jar"  # Destination path on Droplet
 
     - name: SSH into Droplet and restart application
       uses: appleboy/ssh-action@master
