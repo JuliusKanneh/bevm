@@ -3,6 +3,7 @@ name: Java Spring Deployment
 on:
   push:
     branches:
+      - main
       - ch-deploy-to-dgo-prince  # Change this to your main branch name
 
 jobs:
