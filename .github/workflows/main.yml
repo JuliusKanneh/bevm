@@ -48,5 +48,5 @@ jobs:
         password: ${{ secrets.DROPLET_SSH_PRIVATE_KEY }}
         script: |
           sudo systemctl daemon-reload  # Reload systemd configuration
-          sudo systemctl stop your-application.service  # Stop the existing service if applicable
-          sudo systemctl start your-application.service  # Start the new application
+          sudo systemctl stop bevm.service  # Stop the existing service if applicable
+          sudo systemctl start bevm.service  # Start the new application
